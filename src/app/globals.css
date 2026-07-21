@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-navy:         #1B2D5E;
+  --color-brand-navy-light:   #EEF1F8;
+  --color-brand-navy-dark:    #111E40;
+
+  --color-brand-amber:        #FDB813;
+  --color-brand-amber-light:  #FEF8E1;
+  --color-brand-amber-dark:   #D99F0F;
+
+  --color-brand-orange:       #FDB813;
+  --color-brand-orange-light: #FEF8E1;
+  --color-brand-orange-dark:  #D99F0F;
+  --color-brand-blue:         #1B2D5E;
+  --color-brand-blue-light:   #EEF1F8;
+  --color-brand-blue-mid:     #2D4A8A;
+  --color-brand-blue-soft:    #8DA0C4;
+
+  --color-page:               #F5F7FA;
+  --color-card:               #FFFFFF;
+  --color-cream:              #F5F7FA;
+  --color-cream-border:       #E2E8F0;
+
+  --color-ink:                #1B2D5E;
+  --color-ink-muted:          #64748B;
+  --color-ink-light:          #94A3B8;
+
+  --color-explorer:           #10B981;
+  --color-explorer-light:     #F0FDF4;
+  --color-explorer-border:    #D1FAE5;
+
+  --color-builder:            #7C3AED;
+  --color-builder-light:      #F5F3FF;
+  --color-builder-border:     #EDE9FE;
+
+  --color-architect:          #FDB813;
+  --color-architect-light:    #FEF8E1;
+  --color-architect-border:   #FDE68A;
+
+  --color-gold:               #FDB813;
+
+  --font-display: "Nunito", system-ui, sans-serif;
+  --font-body:    "Nunito", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    color: #1B2D5E;
+    background-color: #F5F7FA;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    color: #1B2D5E;
+  }
+}
