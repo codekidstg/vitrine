@@ -37,7 +37,7 @@ const MAZES = [
 ] as const;
 
 // ── Avatar SVG ───────────────────────────────────────────────────
-function KodiAvatar({ size = 28 }: { size?: number }) {
+export function KodiAvatar({ size = 28 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 40 44" fill="none" xmlns="http://www.w3.org/2000/svg">
       {/* Oreilles */}
@@ -169,16 +169,16 @@ function Cell({ row, col, avatarPos, path, teleportCells, phase, maze }: {
   );
 
   if (isBooster) return (
-    <div className="aspect-square rounded-xl flex items-center justify-center bg-yellow-400/20 border-2 border-yellow-400/60"
+    <div className="aspect-square rounded-xl flex items-center justify-center bg-magenta/20 border-2 border-magenta/60"
       style={{ animation: "ckTwinkle 1.5s ease-in-out infinite" }}>
       <span className="text-xl">⚡</span>
     </div>
   );
 
   if (isTeleport) return (
-    <div className="aspect-square rounded-xl flex items-center justify-center bg-yellow-300/30 border-2 border-yellow-300/70"
+    <div className="aspect-square rounded-xl flex items-center justify-center bg-magenta/30 border-2 border-magenta/70"
       style={{ animation: "ckTeleportFlash 0.6s ease-in-out infinite alternate" }}>
-      <span className="text-xs text-yellow-300 font-black">✦</span>
+      <span className="text-xs text-magenta font-black">✦</span>
     </div>
   );
 
@@ -189,9 +189,9 @@ function Cell({ row, col, avatarPos, path, teleportCells, phase, maze }: {
         ? phase === "fail_wall" || phase === "fail_miss"
           ? "bg-rose-500/30 border-2 border-rose-400 scale-110"
           : phase === "success"
-          ? "bg-explorer/30 border-2 border-explorer scale-110"
+          ? "bg-cyan/30 border-2 border-cyan scale-110"
           : phase === "booster_pause"
-          ? "bg-yellow-400/30 border-2 border-yellow-400 scale-110"
+          ? "bg-magenta/30 border-2 border-magenta scale-110"
           : "bg-brand-amber/20 border-2 border-brand-amber scale-105"
         : isGoal
         ? "bg-brand-amber/15 border-2 border-brand-amber/60"
@@ -225,10 +225,10 @@ function QuizModal({ questionIndex, onCorrect, onWrong }: {
 
   return (
     <div className="absolute inset-0 z-20 flex items-center justify-center bg-brand-navy/80 rounded-3xl backdrop-blur-sm">
-      <div className="bg-brand-blue border-2 border-yellow-400/60 rounded-2xl p-6 mx-4 max-w-xs w-full shadow-2xl">
+      <div className="bg-brand-blue border-2 border-magenta/60 rounded-2xl p-6 mx-4 max-w-xs w-full shadow-2xl">
         <div className="flex items-center gap-2 mb-3">
           <span className="text-2xl">⚡</span>
-          <span className="text-xs font-extrabold uppercase tracking-widest text-yellow-300">Booster Cité Numérique</span>
+          <span className="text-xs font-extrabold uppercase tracking-widest text-magenta">Booster Cité Numérique</span>
         </div>
         <p className="text-sm font-bold text-white leading-snug mb-5">{q.question}</p>
         <div className="flex flex-col gap-2">
@@ -237,15 +237,15 @@ function QuizModal({ questionIndex, onCorrect, onWrong }: {
             const isCorrect  = i === q.correct;
             let cls = "w-full py-2.5 px-4 rounded-xl font-extrabold text-sm transition-all ";
             if (selected === null) cls += "bg-white/10 text-white hover:bg-white/20";
-            else if (isSelected && isCorrect)   cls += "bg-explorer text-white scale-105";
+            else if (isSelected && isCorrect)   cls += "bg-cyan text-brand-navy-dark scale-105";
             else if (isSelected && !isCorrect)  cls += "bg-rose-500 text-white";
-            else if (!isSelected && isCorrect)  cls += "bg-explorer/40 text-white";
+            else if (!isSelected && isCorrect)  cls += "bg-cyan/40 text-white";
             else cls += "bg-white/5 text-white/40";
             return <button key={i} className={cls} onClick={() => choose(i)}>{opt}</button>;
           })}
         </div>
         {selected !== null && (
-          <p className={`text-xs font-bold mt-3 text-center ${selected === q.correct ? "text-explorer" : "text-rose-300"}`}>
+          <p className={`text-xs font-bold mt-3 text-center ${selected === q.correct ? "text-cyan" : "text-rose-300"}`}>
             {selected === q.correct ? "🎉 Bravo ! L'avatar file vers l'étoile !" : "❌ Pas tout à fait… Continue ton chemin."}
           </p>
         )}
@@ -273,12 +273,12 @@ function CelebrationOverlay({ bonusXP }: { bonusXP: number }) {
       ))}
       <div className="absolute inset-x-0 bottom-0 flex flex-col items-center pb-4 pt-3"
         style={{ background:"linear-gradient(to top,rgba(0,0,0,0.7),transparent)" }}>
-        <div className="bg-explorer text-white text-center rounded-2xl px-5 py-3 mx-4 shadow-xl"
+        <div className="bg-cyan text-brand-navy-dark text-center rounded-2xl px-5 py-3 mx-4 shadow-xl"
           style={{ animation:"ckCelebScale 1.5s ease-in-out infinite" }}>
           <p className="text-sm font-extrabold leading-tight">
             {bonusXP > 0 ? "⚡ Bravo ! La bonne réponse l'a propulsé vers l'étoile !" : "🎉 Objectif atteint !"}
           </p>
-          <p className="text-xs font-bold mt-1 text-white/80">C&apos;est exactement ce que ressent votre enfant à chaque victoire.</p>
+          <p className="text-xs font-bold mt-1 text-brand-navy-dark/70">C&apos;est exactement ce que ressent votre enfant à chaque victoire.</p>
         </div>
       </div>
     </div>
@@ -462,8 +462,8 @@ export default function MiniQuest() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-widest text-brand-amber mb-4">Expérience interactive</p>
-            <h2 className="font-display text-4xl md:text-5xl font-black text-white leading-tight">
-              Essaie comme<br /><span className="text-brand-amber">ton enfant</span>
+            <h2 className="hud-display text-4xl md:text-5xl text-white">
+              Essaie comme<br /><span className="text-cyan">ton enfant</span>
             </h2>
           </div>
           <div className="flex items-center gap-3 bg-white/10 rounded-2xl px-5 py-3 self-start md:self-auto max-w-xs">
@@ -591,8 +591,8 @@ export default function MiniQuest() {
                     ) : (
                       <pre className="bg-brand-navy rounded-xl p-3 text-[11px] text-blue-200 font-mono leading-relaxed overflow-auto border border-white/10">{boosterCodeBasic}</pre>
                     )}
-                    <div className="bg-yellow-400/10 border border-yellow-400/30 rounded-xl p-3">
-                      <p className="text-[11px] font-bold text-yellow-300 leading-snug">
+                    <div className="bg-magenta/10 border border-magenta/30 rounded-xl p-3">
+                      <p className="text-[11px] font-bold text-magenta leading-snug">
                         ⚡ <strong>Le booster a introduit un `if`</strong> — en vrai code, une condition qui choisit quoi faire selon la situation. C&apos;est le cœur de tout programme intelligent.
                       </p>
                     </div>
@@ -613,8 +613,8 @@ export default function MiniQuest() {
                   </div>
                 ) : (
                   <div>
-                    <div className="text-[10px] font-extrabold uppercase tracking-widest text-explorer mb-1.5">Code — déjà optimal ✅</div>
-                    <pre className="bg-brand-navy rounded-xl p-3 text-[11px] text-explorer font-mono leading-relaxed overflow-auto max-h-40 border border-explorer/30">{basic}</pre>
+                    <div className="text-[10px] font-extrabold uppercase tracking-widest text-cyan mb-1.5">Code — déjà optimal ✅</div>
+                    <pre className="bg-brand-navy rounded-xl p-3 text-[11px] text-cyan font-mono leading-relaxed overflow-auto max-h-40 border border-cyan/30">{basic}</pre>
                     <p className="text-[10px] text-blue-300 mt-2">Aucune répétition — ton algorithme est déjà propre !</p>
                   </div>
                 )}
