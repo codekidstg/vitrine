@@ -1,30 +1,37 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-navy:         #1B2D5E;
-  --color-brand-navy-light:   #EEF1F8;
-  --color-brand-navy-dark:    #111E40;
+  /* Cité Numérique HUD — sections sombres ("monde" / interactif) */
+  --color-brand-navy:         #0A0F22;
+  --color-brand-navy-light:   #171E3D;
+  --color-brand-navy-dark:    #060811;
 
-  --color-brand-amber:        #FDB813;
-  --color-brand-amber-light:  #FEF8E1;
-  --color-brand-amber-dark:   #D99F0F;
+  --color-brand-amber:        #FFB020;
+  --color-brand-amber-light:  #FEF3DC;
+  --color-brand-amber-dark:   #B8720A;
 
-  --color-brand-orange:       #FDB813;
-  --color-brand-orange-light: #FEF8E1;
-  --color-brand-orange-dark:  #D99F0F;
-  --color-brand-blue:         #1B2D5E;
-  --color-brand-blue-light:   #EEF1F8;
-  --color-brand-blue-mid:     #2D4A8A;
-  --color-brand-blue-soft:    #8DA0C4;
+  --color-brand-orange:       #FFB020;
+  --color-brand-orange-light: #FEF3DC;
+  --color-brand-orange-dark:  #B8720A;
+  --color-brand-blue:         #0A0F22;
+  --color-brand-blue-light:   #171E3D;
+  --color-brand-blue-mid:     #10162E;
+  --color-brand-blue-soft:    rgba(243,246,255,0.55);
 
-  --color-page:               #F5F7FA;
+  --color-cyan:                #37E6C4;
+  --color-cyan-dark:            #0E8F73;
+  --color-magenta:              #FF3D81;
+  --color-magenta-dark:         #C81E63;
+
+  /* sections claires ("menu" / confiance) */
+  --color-page:               #EEF1F8;
   --color-card:               #FFFFFF;
-  --color-cream:              #F5F7FA;
-  --color-cream-border:       #E2E8F0;
+  --color-cream:              #EEF1F8;
+  --color-cream-border:       #DCE1F0;
 
-  --color-ink:                #1B2D5E;
-  --color-ink-muted:          #64748B;
-  --color-ink-light:          #94A3B8;
+  --color-ink:                #0A0F22;
+  --color-ink-muted:          #4A5578;
+  --color-ink-light:          #8891B0;
 
   --color-explorer:           #10B981;
   --color-explorer-light:     #F0FDF4;
@@ -34,21 +41,23 @@
   --color-builder-light:      #F5F3FF;
   --color-builder-border:     #EDE9FE;
 
-  --color-architect:          #FDB813;
-  --color-architect-light:    #FEF8E1;
-  --color-architect-border:   #FDE68A;
+  --color-architect:          #FFB020;
+  --color-architect-light:    #FEF3DC;
+  --color-architect-border:   #FDE0A8;
 
-  --color-gold:               #FDB813;
+  --color-gold:               #FFB020;
 
   --font-display: "Nunito", system-ui, sans-serif;
   --font-body:    "Nunito", system-ui, sans-serif;
+  --font-hud:     var(--font-bebas), "Arial Narrow", sans-serif;
+  --font-mono:    var(--font-plex-mono), "Courier New", monospace;
 }
 
 @layer base {
   html {
     font-family: var(--font-body);
-    color: #1B2D5E;
-    background-color: #F5F7FA;
+    color: #0A0F22;
+    background-color: #EEF1F8;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -56,6 +65,29 @@
     font-family: var(--font-display);
     font-weight: 900;
     letter-spacing: -0.025em;
-    color: #1B2D5E;
+    color: #0A0F22;
+  }
+}
+
+@layer components {
+  /* Titres d'écran HUD — utilisés sur les gros titres (hero, en-têtes de section) */
+  .hud-display {
+    font-family: var(--font-hud);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.98;
+  }
+
+  .hud-mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
