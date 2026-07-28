@@ -75,27 +75,35 @@ function LeaderboardRow({ t, index }: { t: typeof TESTIMONIALS[0]; index: number
   return (
     <div
       ref={ref}
-      className="grid grid-cols-[auto_auto_1fr_auto] gap-4 items-center bg-card border border-cream-border rounded-2xl px-6 py-5 shadow-[0_1px_3px_rgba(10,15,34,0.05)]"
+      className="flex flex-col gap-3 sm:grid sm:grid-cols-[auto_auto_1fr_auto] sm:gap-4 sm:items-center bg-card border border-cream-border rounded-2xl px-5 py-5 sm:px-6 shadow-[0_1px_3px_rgba(10,15,34,0.05)]"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(20px)",
         transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`,
       }}
     >
-      <div className="hud-mono text-lg font-black text-ink-light w-7">{String(index + 1).padStart(2, "0")}</div>
-      <div
-        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-sm flex-shrink-0"
-        style={{ background: t.color }}
-      >
-        {t.avatar}
+      <div className="flex items-center gap-3 sm:contents">
+        <div className="hud-mono text-lg font-black text-ink-light w-7 flex-shrink-0">{String(index + 1).padStart(2, "0")}</div>
+        <div
+          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-black text-sm flex-shrink-0"
+          style={{ background: t.color }}
+        >
+          {t.avatar}
+        </div>
+        <div className="sm:hidden min-w-0">
+          <div className="text-xs font-extrabold text-ink truncate">{t.name}</div>
+          <div className="text-ink-light text-xs font-bold truncate">{t.role}, {t.city}</div>
+        </div>
       </div>
-      <div>
-        <p className="text-ink text-sm leading-relaxed mb-1.5 max-w-xl">{t.text}</p>
-        <div className="text-xs font-extrabold text-ink">{t.name} <span className="text-ink-light font-bold">— {t.role}, {t.city}</span></div>
+
+      <div className="min-w-0">
+        <p className="text-ink text-sm leading-relaxed mb-1.5 sm:max-w-xl">{t.text}</p>
+        <div className="hidden sm:block text-xs font-extrabold text-ink">{t.name} <span className="text-ink-light font-bold">— {t.role}, {t.city}</span></div>
       </div>
-      <div className="text-right">
+
+      <div className="flex items-center gap-2 sm:flex-col sm:items-end sm:gap-0">
         <Stars count={t.stars} />
-        <div className="mt-1.5 text-[11px] font-extrabold text-brand-amber-dark bg-brand-amber-light px-2.5 py-1 rounded-full whitespace-nowrap">
+        <div className="sm:mt-1.5 text-[11px] font-extrabold text-brand-amber-dark bg-brand-amber-light px-2.5 py-1 rounded-full whitespace-nowrap">
           {t.child}
         </div>
       </div>

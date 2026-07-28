@@ -135,14 +135,14 @@ function HeroSection() {
             <div className="flex items-start" style={{ gap: 0 }}>
               {LEVELS.map((lvl, i) => (
                 <div key={lvl.label} className="flex items-center" style={{ flex: i === LEVELS.length - 1 ? "0 0 auto" : 1 }}>
-                  <div className="flex flex-col items-center gap-1.5 w-24">
+                  <div className="flex flex-col items-center gap-1.5 w-16 sm:w-24">
                     <div
-                      className="w-11 h-11 rounded-full border-2 flex items-center justify-center text-lg"
+                      className="w-9 h-9 sm:w-11 sm:h-11 rounded-full border-2 flex items-center justify-center text-base sm:text-lg flex-shrink-0"
                       style={{ background: `${lvl.color}26`, borderColor: lvl.color }}
                     >
                       {lvl.icon}
                     </div>
-                    <div className="text-[10px] font-extrabold text-white/45 uppercase tracking-wide text-center leading-tight">
+                    <div className="text-[9px] sm:text-[10px] font-extrabold text-white/45 uppercase tracking-wide text-center leading-tight">
                       {lvl.label}<br />{lvl.age}
                     </div>
                   </div>

@@ -10,6 +10,10 @@ export default function About() {
           </span>
         </div>
 
+        <h2 className="hud-display text-4xl md:text-5xl text-ink mb-10">
+          Nés à Lomé.<br /><span className="text-cyan-dark">Codeurs avant tout.</span>
+        </h2>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
           {/* Colonne gauche — fenêtre terminal */}
@@ -21,7 +25,7 @@ export default function About() {
               <span className="hud-mono text-[11px] text-white/35 ml-2">notre-histoire.log</span>
             </div>
             <div className="p-6 space-y-5 text-[15px] leading-relaxed text-white/70">
-              <p className="text-brand-amber font-bold">&gt; Nés à Lomé. Codeurs avant tout.</p>
+              <p className="hud-mono text-brand-amber text-sm">$ cat notre-histoire.log</p>
               <p>
                 Tout a commencé avec un constat simple : en Afrique de l'Ouest, l'informatique et la
                 programmation n'ont pas encore trouvé leur place dans l'éducation des enfants.
