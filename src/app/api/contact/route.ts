@@ -5,7 +5,6 @@ const TO_EMAIL = "codekidstg@proton.me";
 const MIN_FILL_TIME_MS = 1200;
 
 const SUBJECT_LABELS: Record<string, string> = {
-  inscription: "Inscription d'un enfant",
   information: "Demande d'information",
   mentor: "Candidature mentor",
   autre: "Autre demande",
@@ -13,10 +12,9 @@ const SUBJECT_LABELS: Record<string, string> = {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { subject, name, childAge, contact, message, company, startedAt } = body as {
+  const { subject, name, contact, message, company, startedAt } = body as {
     subject?: string;
     name?: string;
-    childAge?: string;
     contact?: string;
     message?: string;
     company?: string;
@@ -63,7 +61,6 @@ export async function POST(request: Request) {
     text: [
       `Sujet : ${subjectLabel}`,
       `Nom : ${name}`,
-      childAge ? `Âge de l'enfant : ${childAge}` : null,
       `Contact (téléphone ou email) : ${contact}`,
       message ? `Message :\n${message}` : null,
     ]

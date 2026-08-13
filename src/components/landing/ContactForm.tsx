@@ -5,7 +5,6 @@ import { useRef, useState } from "react";
 type Status = "idle" | "sending" | "sent" | "error";
 
 const SUBJECTS = [
-  { value: "inscription", label: "Inscrire mon enfant" },
   { value: "information", label: "Demande d'information" },
   { value: "mentor", label: "Devenir mentor" },
   { value: "autre", label: "Autre" },
@@ -16,7 +15,7 @@ type SubjectValue = (typeof SUBJECTS)[number]["value"];
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
-  const [subject, setSubject] = useState<SubjectValue>("inscription");
+  const [subject, setSubject] = useState<SubjectValue>("information");
   const mountedAt = useRef(Date.now());
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -29,7 +28,6 @@ export default function ContactForm() {
     const payload = {
       subject,
       name: String(data.get("name") || ""),
-      childAge: subject === "inscription" ? String(data.get("childAge") || "") : "",
       contact: String(data.get("contact") || ""),
       message: String(data.get("message") || ""),
       company: String(data.get("company") || ""),
@@ -50,7 +48,7 @@ export default function ContactForm() {
       }
       setStatus("sent");
       form.reset();
-      setSubject("inscription");
+      setSubject("information");
     } catch {
       setStatus("error");
       setErrorMsg("Impossible d'envoyer le message — vérifiez votre connexion et réessayez.");
@@ -64,9 +62,20 @@ export default function ContactForm() {
           Contact
         </p>
         <h2 className="hud-display text-4xl text-ink mb-3 text-center">Parlons-en</h2>
-        <p className="text-ink-muted text-sm text-center mb-10 max-w-md mx-auto">
-          Une question, une envie de rejoindre l&apos;équipe, ou prêt à inscrire votre enfant ? Écrivez-nous — on répond dans la journée.
+        <p className="text-ink-muted text-sm text-center mb-6 max-w-md mx-auto">
+          Une question, une envie de rejoindre l&apos;équipe ? Écrivez-nous — on répond dans la journée.
         </p>
+
+        <a
+          href="/seance-offerte"
+          className="flex items-center justify-between gap-3 bg-brand-amber-light border border-brand-amber-dark/25 rounded-2xl px-5 py-4 mb-8 hover:bg-brand-amber-light/70 transition-colors group"
+        >
+          <div>
+            <div className="text-sm font-black text-ink">🎁 Vous voulez inscrire votre enfant ?</div>
+            <div className="text-xs font-bold text-ink-light mt-0.5">Réservez directement la séance d&apos;immersion offerte.</div>
+          </div>
+          <span className="text-lg text-brand-amber-dark flex-shrink-0 transition-transform group-hover:translate-x-1">→</span>
+        </a>
 
         {status === "sent" ? (
           <div className="bg-card border border-cream-border rounded-2xl p-8 text-center">
@@ -122,21 +131,6 @@ export default function ContactForm() {
               />
             </div>
 
-            {subject === "inscription" && (
-              <div>
-                <label htmlFor="childAge" className="block text-xs font-extrabold uppercase tracking-widest text-ink-light mb-2">
-                  Âge de l&apos;enfant
-                </label>
-                <input
-                  id="childAge"
-                  name="childAge"
-                  type="text"
-                  className="w-full rounded-xl border border-cream-border bg-cream px-4 py-3 text-sm text-ink outline-none focus:border-brand-amber-dark focus:ring-2 focus:ring-brand-amber/20 transition-all"
-                  placeholder="Ex : 12 ans"
-                />
-              </div>
-            )}
-
             <div>
               <label htmlFor="contact" className="block text-xs font-extrabold uppercase tracking-widest text-ink-light mb-2">
                 Téléphone ou email
@@ -153,22 +147,20 @@ export default function ContactForm() {
 
             <div>
               <label htmlFor="message" className="block text-xs font-extrabold uppercase tracking-widest text-ink-light mb-2">
-                Message <span className="normal-case font-bold text-ink-light/70">{subject === "inscription" ? "(facultatif)" : ""}</span>
+                Message
               </label>
               <textarea
                 id="message"
                 name="message"
                 rows={3}
-                required={subject !== "inscription"}
+                required
                 className="w-full rounded-xl border border-cream-border bg-cream px-4 py-3 text-sm text-ink outline-none focus:border-brand-amber-dark focus:ring-2 focus:ring-brand-amber/20 transition-all resize-none"
                 placeholder={
                   subject === "mentor"
                     ? "Votre parcours, votre expérience d'enseignement..."
                     : subject === "information"
                     ? "Votre question..."
-                    : subject === "autre"
-                    ? "Dites-nous en plus..."
-                    : "Une question, une disponibilité particulière..."
+                    : "Dites-nous en plus..."
                 }
               />
             </div>

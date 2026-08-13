@@ -104,7 +104,7 @@ function HeroSection() {
             <span className="text-brand-amber text-xs font-extrabold">🌍 Togo · Bénin · Côte d&apos;Ivoire · Burkina Faso</span>
           </div>
           <a
-            href="#contact"
+            href="/seance-offerte"
             className="inline-flex items-center gap-2 bg-magenta/10 border border-magenta/30 rounded-full px-4 py-1.5 text-magenta text-xs font-extrabold hover:bg-magenta/15 transition-colors"
           >
             🎁 1ère séance offerte, sans engagement
@@ -124,7 +124,7 @@ function HeroSection() {
             </p>
 
             <div className="flex flex-wrap gap-3 mb-9">
-              <a href="#contact" className="bg-brand-amber text-brand-navy-dark font-extrabold text-sm px-7 py-3.5 rounded-xl hover:brightness-110 transition-all shadow-[0_10px_26px_rgba(255,176,32,0.25)]">
+              <a href="/seance-offerte" className="bg-brand-amber text-brand-navy-dark font-extrabold text-sm px-7 py-3.5 rounded-xl hover:brightness-110 transition-all shadow-[0_10px_26px_rgba(255,176,32,0.25)]">
                 Inscrire mon enfant →
               </a>
               <a href="#niveaux" className="border border-white/20 text-white font-extrabold text-sm px-7 py-3.5 rounded-xl hover:bg-white/5 transition-colors">

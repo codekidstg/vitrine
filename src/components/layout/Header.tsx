@@ -20,17 +20,17 @@ export default function Header() {
             <span className="text-sm">⚡</span>
             <span className="hud-mono text-xs font-bold text-cyan">680 XP</span>
           </div>
-          <Link href="#niveaux" className="text-sm font-bold text-white/65 hover:text-white transition-colors">
+          <Link href="/#niveaux" className="text-sm font-bold text-white/65 hover:text-white transition-colors">
             Les niveaux
           </Link>
-          <Link href="#faq" className="text-sm font-bold text-white/65 hover:text-white transition-colors">
+          <Link href="/#faq" className="text-sm font-bold text-white/65 hover:text-white transition-colors">
             FAQ
           </Link>
-          <Link href="#apropos" className="text-sm font-bold text-white/65 hover:text-white transition-colors">
+          <Link href="/#apropos" className="text-sm font-bold text-white/65 hover:text-white transition-colors">
             À propos
           </Link>
           <Link
-            href="#contact"
+            href="/seance-offerte"
             className="bg-brand-amber text-brand-navy-dark text-sm font-extrabold px-5 py-2.5 rounded-xl hover:brightness-110 transition-all shadow-[0_0_0_2px_rgba(255,176,32,0.15)]"
           >
             Inscrire mon enfant
@@ -50,11 +50,11 @@ export default function Header() {
 
       {menuOpen && (
         <div className="md:hidden border-t border-white/10 bg-brand-navy px-7 py-5 flex flex-col gap-4">
-          <Link href="#niveaux" className="text-sm font-bold text-white/70" onClick={() => setMenuOpen(false)}>Les niveaux</Link>
-          <Link href="#faq" className="text-sm font-bold text-white/70" onClick={() => setMenuOpen(false)}>FAQ</Link>
-          <Link href="#apropos" className="text-sm font-bold text-white/70" onClick={() => setMenuOpen(false)}>À propos</Link>
+          <Link href="/#niveaux" className="text-sm font-bold text-white/70" onClick={() => setMenuOpen(false)}>Les niveaux</Link>
+          <Link href="/#faq" className="text-sm font-bold text-white/70" onClick={() => setMenuOpen(false)}>FAQ</Link>
+          <Link href="/#apropos" className="text-sm font-bold text-white/70" onClick={() => setMenuOpen(false)}>À propos</Link>
           <Link
-            href="#contact"
+            href="/seance-offerte"
             className="bg-brand-amber text-brand-navy-dark text-sm font-extrabold px-5 py-2.5 rounded-xl text-center"
             onClick={() => setMenuOpen(false)}
           >
