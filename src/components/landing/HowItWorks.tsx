@@ -55,7 +55,7 @@ export default function HowItWorks() {
             <div className="text-sm text-ink-muted font-bold">Sans engagement — le tarif n&apos;est communiqué qu&apos;après cette première séance.</div>
           </div>
           <a
-            href="#contact"
+            href="/seance-offerte"
             className="flex-shrink-0 bg-brand-amber text-brand-navy-dark font-extrabold text-sm px-7 py-3.5 rounded-xl hover:brightness-110 transition-all"
           >
             Réserver la séance gratuite →

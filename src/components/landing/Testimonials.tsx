@@ -165,7 +165,7 @@ export default function Testimonials() {
             Rejoignez les premières familles de Lomé qui ont déjà franchi le pas.
           </p>
           <a
-            href="#contact"
+            href="/seance-offerte"
             className="inline-flex items-center gap-2 bg-brand-amber text-brand-navy-dark font-extrabold text-sm px-8 py-4 rounded-xl hover:brightness-110 transition-all"
           >
             Inscrire mon enfant →

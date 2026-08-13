@@ -21,10 +21,10 @@ export default function Footer() {
 
         <div className="flex flex-col gap-3">
           <span className="text-xs font-extrabold uppercase tracking-widest text-white/40 mb-1">Navigation</span>
-          <Link href="#niveaux" className="text-sm text-white/65 hover:text-white transition-colors font-bold">Les niveaux</Link>
-          <Link href="#faq" className="text-sm text-white/65 hover:text-white transition-colors font-bold">FAQ</Link>
-          <Link href="#apropos" className="text-sm text-white/65 hover:text-white transition-colors font-bold">À propos</Link>
-          <Link href="#contact" className="text-sm text-brand-amber hover:text-white transition-colors font-extrabold">
+          <Link href="/#niveaux" className="text-sm text-white/65 hover:text-white transition-colors font-bold">Les niveaux</Link>
+          <Link href="/#faq" className="text-sm text-white/65 hover:text-white transition-colors font-bold">FAQ</Link>
+          <Link href="/#apropos" className="text-sm text-white/65 hover:text-white transition-colors font-bold">À propos</Link>
+          <Link href="/seance-offerte" className="text-sm text-brand-amber hover:text-white transition-colors font-extrabold">
             Inscrire mon enfant →
           </Link>
         </div>
@@ -51,9 +51,9 @@ export default function Footer() {
               Lomé · Abidjan · Cotonou · Ouagadougou
             </p>
           </div>
-          <p className="text-xs text-white/45 font-bold italic mt-1">
-            Séance d&apos;immersion offerte aux parents
-          </p>
+          <Link href="/seance-offerte" className="block text-xs text-white/45 hover:text-brand-amber font-bold italic mt-1 transition-colors">
+            Séance d&apos;immersion offerte aux parents →
+          </Link>
         </div>
       </div>
 
