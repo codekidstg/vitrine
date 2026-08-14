@@ -1,39 +1,23 @@
 "use client";
 
-import { Fragment, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 const WHATSAPP_NUMBER = "22891746278";
 const TO_EMAIL_HINT = "codekidstg@proton.me";
 
-const WEEKDAYS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+const MONTHS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+const WEEKDAYS_SHORT = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+const WEEKDAYS_FULL = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+const HORIZON_DAYS = 28;
+const MORNING_HOURS = ["9h", "10h", "11h"];
+const AFTERNOON_HOURS = ["15h", "16h", "17h"];
 
-function pad(n: number) {
-  return String(n).padStart(2, "0");
-}
-function fmt(d: Date) {
-  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
-}
-
-function buildWeeks() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const dow = (today.getDay() + 6) % 7; // 0 = lundi
-  const nextMonday = new Date(today);
-  nextMonday.setDate(today.getDate() - dow + 7);
-
-  return [0, 1].map((w) => {
-    const days = Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(nextMonday);
-      d.setDate(nextMonday.getDate() + w * 7 + i);
-      return { weekday: WEEKDAYS[i], date: fmt(d) };
-    });
-    return { label: `Semaine du ${days[0].date} au ${days[6].date}`, days };
-  });
+function sameDay(a: Date, b: Date) {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
-type Slot = "m" | "a";
 type Status = "idle" | "sending" | "sent" | "error";
 
 function Pill({
@@ -93,8 +77,128 @@ function SectionHead({ icon, title, subtitle }: { icon: string; title: string; s
   );
 }
 
+function SlotCalendar({
+  selectedDate,
+  onSelectDate,
+}: {
+  selectedDate: Date | null;
+  onSelectDate: (d: Date) => void;
+}) {
+  const today = useState(() => {
+    const t = new Date();
+    t.setHours(0, 0, 0, 0);
+    return t;
+  })[0];
+  const maxDate = useState(() => {
+    const m = new Date(today);
+    m.setDate(today.getDate() + HORIZON_DAYS);
+    return m;
+  })[0];
+
+  const [viewYear, setViewYear] = useState(today.getFullYear());
+  const [viewMonth, setViewMonth] = useState(today.getMonth());
+
+  const firstOfMonth = new Date(viewYear, viewMonth, 1);
+  const startWeekday = (firstOfMonth.getDay() + 6) % 7; // 0 = lundi
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+  const isCurrentMonth = viewYear === today.getFullYear() && viewMonth === today.getMonth();
+  const firstOfNextView = new Date(viewYear, viewMonth + 1, 1);
+  const nextDisabled = firstOfNextView > maxDate;
+
+  function goPrev() {
+    setViewMonth((m) => {
+      if (m === 0) {
+        setViewYear((y) => y - 1);
+        return 11;
+      }
+      return m - 1;
+    });
+  }
+  function goNext() {
+    setViewMonth((m) => {
+      if (m === 11) {
+        setViewYear((y) => y + 1);
+        return 0;
+      }
+      return m + 1;
+    });
+  }
+
+  const cells: (Date | null)[] = [
+    ...Array.from({ length: startWeekday }, () => null),
+    ...Array.from({ length: daysInMonth }, (_, i) => new Date(viewYear, viewMonth, i + 1)),
+  ];
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <div className="text-sm font-black text-ink capitalize">
+          {MONTHS[viewMonth]} {viewYear}
+        </div>
+        <div className="flex gap-1.5">
+          <button
+            type="button"
+            onClick={goPrev}
+            disabled={isCurrentMonth}
+            className="w-8 h-8 rounded-lg border-2 border-cream-border bg-cream text-ink font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed hover:not-disabled:border-brand-navy transition-colors"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            onClick={goNext}
+            disabled={nextDisabled}
+            className="w-8 h-8 rounded-lg border-2 border-cream-border bg-cream text-ink font-black text-sm disabled:opacity-30 disabled:cursor-not-allowed hover:not-disabled:border-brand-navy transition-colors"
+          >
+            →
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-7 gap-1 mb-1.5">
+        {WEEKDAYS_SHORT.map((w) => (
+          <span key={w} className="text-center text-[10px] font-extrabold text-ink-light uppercase">
+            {w}
+          </span>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-7 gap-1">
+        {cells.map((date, i) => {
+          if (!date) return <div key={i} className="aspect-square" />;
+          const isPast = date < today;
+          const isBeyondHorizon = date > maxDate;
+          const disabled = isPast || isBeyondHorizon;
+          const isToday = sameDay(date, today);
+          const isSelected = selectedDate && sameDay(date, selectedDate);
+
+          return (
+            <button
+              type="button"
+              key={i}
+              disabled={disabled}
+              onClick={() => onSelectDate(date)}
+              className={`aspect-square rounded-lg text-[13px] font-extrabold transition-all border-2 ${
+                isSelected
+                  ? "bg-brand-navy border-brand-navy text-white"
+                  : disabled
+                  ? "border-transparent text-ink-light/50 cursor-not-allowed"
+                  : isToday
+                  ? "border-brand-amber-dark text-ink bg-cream hover:border-brand-navy"
+                  : "border-transparent text-ink bg-cream hover:border-brand-navy"
+              }`}
+            >
+              {date.getDate()}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function SeanceOfferteePage() {
-  const weeks = useMemo(buildWeeks, []);
   const mountedAt = useRef(Date.now());
 
   const [nom, setNom] = useState("");
@@ -113,8 +217,8 @@ export default function SeanceOfferteePage() {
   const [ville, setVille] = useState("Lomé");
   const [repere, setRepere] = useState("");
 
-  const [slots, setSlots] = useState<Map<string, string>>(new Map());
-  const [pref, setPref] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedHour, setSelectedHour] = useState<string | null>(null);
 
   const [error, setError] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -122,15 +226,6 @@ export default function SeanceOfferteePage() {
 
   const errRef = useRef<HTMLDivElement>(null);
   const [company, setCompany] = useState("");
-
-  function toggleSlot(key: string, label: string) {
-    setSlots((prev) => {
-      const next = new Map(prev);
-      if (next.has(key)) next.delete(key);
-      else next.set(key, label);
-      return next;
-    });
-  }
 
   function validate(): string[] {
     const missing: string[] = [];
@@ -140,12 +235,15 @@ export default function SeanceOfferteePage() {
     if (!parentTel.trim()) missing.push("votre téléphone WhatsApp");
     if (!quartier.trim()) missing.push("votre quartier");
     if (!presentOk) missing.push("la confirmation de votre présence à la séance");
-    if (slots.size === 0) missing.push("au moins un créneau de disponibilité");
+    if (!selectedDate || !selectedHour) missing.push("le jour et l'heure souhaités");
     return missing;
   }
 
   function buildMessage(): string {
-    const slotList = [...slots.values()];
+    const slotText =
+      selectedDate && selectedHour
+        ? `${WEEKDAYS_FULL[selectedDate.getDay()]} ${selectedDate.getDate()} ${MONTHS[selectedDate.getMonth()]} à ${selectedHour}`
+        : "";
     const lines = [
       "*PRÉ-INSCRIPTION codeKids — Séance offerte*",
       "",
@@ -157,10 +255,8 @@ export default function SeanceOfferteePage() {
       "",
       `*Domicile :* ${quartier}${ville ? `, ${ville}` : ""}${repere ? ` (${repere})` : ""}`,
       "",
-      "*Disponibilités :*",
-      ...slotList.map((s) => `- ${s}`),
+      `*Créneau souhaité :* ${slotText}`,
     ];
-    if (pref.trim()) lines.push(`*Préférence :* ${pref}`);
     return lines.join("\n");
   }
 
@@ -360,50 +456,82 @@ export default function SeanceOfferteePage() {
               </Field>
             </div>
 
-            {/* Disponibilités */}
+            {/* Créneau */}
             <div>
-              <SectionHead icon="🗓️" title="Tes disponibilités" subtitle="Coche tous les créneaux qui t'arrangent" />
-              <p className="text-xs font-bold text-ink-light mb-4">Matin = 9h–12h · Après-midi = 15h–18h. Plus tu coches de créneaux, plus vite on confirme.</p>
+              <SectionHead icon="🗓️" title="Ton créneau" subtitle="Choisis le jour et l'heure qui t'arrangent le mieux" />
 
-              {weeks.map((week, wi) => (
-                <div key={wi} className="mb-5">
-                  <h3 className="text-xs font-black text-ink uppercase tracking-widest mb-2.5 flex items-center gap-2">
-                    {week.label}
-                    <span className="flex-1 h-px bg-brand-amber-light" />
-                  </h3>
-                  <div className="grid grid-cols-[1fr_auto_auto] gap-1.5 items-center">
-                    {week.days.map((day, di) => (
-                      <Fragment key={di}>
-                        <div className="text-xs font-extrabold text-ink py-1">
-                          {day.weekday} <span className="text-ink-light font-bold">{day.date}</span>
-                        </div>
-                        {(["m", "a"] as Slot[]).map((s) => {
-                          const key = `w${wi}-${di}-${s}`;
-                          const label = `${day.weekday.slice(0, 3)} ${day.date} ${s === "m" ? "matin" : "ap.midi"}`;
-                          const checked = slots.has(key);
-                          return (
-                            <label key={key} className="relative cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={checked}
-                                onChange={() => toggleSlot(key, label)}
-                                className="peer sr-only"
-                              />
-                              <span className="flex items-center justify-center min-w-[76px] px-2.5 py-2 rounded-lg border-2 border-cream-border text-xs font-extrabold text-ink-light select-none transition-all peer-checked:bg-brand-amber peer-checked:border-brand-amber peer-checked:text-brand-navy-dark peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-brand-navy">
-                                {s === "m" ? "Matin" : "Après-midi"}
-                              </span>
-                            </label>
-                          );
-                        })}
-                      </Fragment>
-                    ))}
+              <SlotCalendar
+                selectedDate={selectedDate}
+                onSelectDate={(d) => {
+                  setSelectedDate(d);
+                  setSelectedHour(null);
+                }}
+              />
+
+              {selectedDate && (
+                <div className="mt-5 pt-5 border-t border-cream-border">
+                  <div className="text-xs font-extrabold text-ink mb-2.5">Choisis une heure</div>
+
+                  <div className="mb-3">
+                    <div className="text-[10px] font-extrabold text-ink-light uppercase mb-1.5">Matin</div>
+                    <div className="flex flex-wrap gap-2">
+                      {MORNING_HOURS.map((h) => (
+                        <button
+                          key={h}
+                          type="button"
+                          onClick={() => setSelectedHour(h)}
+                          className={`px-4 py-2 rounded-lg border-2 text-sm font-extrabold transition-all ${
+                            selectedHour === h
+                              ? "bg-brand-amber border-brand-amber text-brand-navy-dark"
+                              : "bg-cream border-cream-border text-ink-muted hover:border-brand-amber-dark"
+                          }`}
+                        >
+                          {h}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
 
-              <Field label="Ton créneau préféré (n°1)">
-                <input className={inputClass} value={pref} onChange={(e) => setPref(e.target.value)} placeholder="Ex. Mardi, matin" />
-              </Field>
+                  <div className="mb-4">
+                    <div className="text-[10px] font-extrabold text-ink-light uppercase mb-1.5">Après-midi</div>
+                    <div className="flex flex-wrap gap-2">
+                      {AFTERNOON_HOURS.map((h) => (
+                        <button
+                          key={h}
+                          type="button"
+                          onClick={() => setSelectedHour(h)}
+                          className={`px-4 py-2 rounded-lg border-2 text-sm font-extrabold transition-all ${
+                            selectedHour === h
+                              ? "bg-brand-amber border-brand-amber text-brand-navy-dark"
+                              : "bg-cream border-cream-border text-ink-muted hover:border-brand-amber-dark"
+                          }`}
+                        >
+                          {h}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 bg-brand-amber-light border border-brand-amber-dark/25 rounded-xl px-4 py-3">
+                    <span className="text-sm flex-shrink-0">💡</span>
+                    <p className="text-xs font-bold text-ink-muted leading-relaxed">
+                      Si ce créneau est déjà pris, on te recontacte pour en trouver un autre ensemble.
+                    </p>
+                  </div>
+
+                  {selectedDate && selectedHour && (
+                    <div className="flex items-center gap-2.5 bg-brand-navy rounded-xl px-4 py-3.5 mt-3">
+                      <span className="text-base flex-shrink-0">📅</span>
+                      <p className="text-sm font-extrabold text-white">
+                        Créneau souhaité :{" "}
+                        <span className="text-brand-amber">
+                          {WEEKDAYS_FULL[selectedDate.getDay()]} {selectedDate.getDate()} {MONTHS[selectedDate.getMonth()]} à {selectedHour}
+                        </span>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Honeypot */}
