@@ -169,7 +169,8 @@ function SlotCalendar({
           if (!date) return <div key={i} className="aspect-square" />;
           const isPast = date < today;
           const isBeyondHorizon = date > maxDate;
-          const disabled = isPast || isBeyondHorizon;
+          const isWeekday = date.getDay() >= 1 && date.getDay() <= 5;
+          const disabled = isPast || isBeyondHorizon || isWeekday;
           const isToday = sameDay(date, today);
           const isSelected = selectedDate && sameDay(date, selectedDate);
 
@@ -459,6 +460,7 @@ export default function SeanceOfferteePage() {
             {/* Créneau */}
             <div>
               <SectionHead icon="🗓️" title="Ton créneau" subtitle="Choisis le jour et l'heure qui t'arrangent le mieux" />
+              <p className="text-xs font-bold text-ink-light mb-4">📅 Séances disponibles uniquement le week-end (samedi et dimanche).</p>
 
               <SlotCalendar
                 selectedDate={selectedDate}
